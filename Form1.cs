@@ -62,7 +62,10 @@ namespace Puzzle15_202101
         private void Tile_Click(object sender, EventArgs e)
         {
             Button tile = (Button)sender;
-            SwapTiles(tile);
+            if (CanSwap(tile))
+            {
+                SwapTiles(tile);
+            }            
         }
         
         private void SwapTiles(Button tile)
@@ -80,6 +83,11 @@ namespace Puzzle15_202101
             {
                 SwapTiles(tiles[rand.Next(0, 15)]);
             }
+        }
+
+        private bool CanSwap(Button tile)
+        {
+            return true;
         }
     }
 }
