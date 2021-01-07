@@ -14,6 +14,7 @@ namespace Puzzle15_202101
     {
 
         List<Button> tiles = new List<Button>();
+        List<Point> initialLocations = new List<Point>(); 
         Random rand = new Random();
 
         public Puzzle()
@@ -33,10 +34,14 @@ namespace Puzzle15_202101
                 {
                     tile = new Button();
                     tile.BackColor = Color.SteelBlue;
+                    tile.Font = new Font(tile.Font.FontFamily, 22);
+                    tile.ForeColor = Color.White;
+                    tile.FlatStyle = FlatStyle.Flat;
                     tile.Width = 80;
                     tile.Height = 80;
                     tile.Top = 20 + j * 90;
                     tile.Left = 20 + i * 90;
+                    initialLocations.Add(tile.Location);
 
                     tile.Click += Tile_Click;
 
@@ -65,6 +70,7 @@ namespace Puzzle15_202101
             if (CanSwap(tile))
             {
                 SwapTiles(tile);
+                CheckForWin();
             }            
         }
         
@@ -87,7 +93,40 @@ namespace Puzzle15_202101
 
         private bool CanSwap(Button tile)
         {
-            return true;
+            double a = 0, b = 0, c = 0;
+            Button tileEmpty = (Button)this.Controls["TileEmpty"];
+
+            a = (double)(tileEmpty.Left - tile.Left);
+            b = (double)(tileEmpty.Top - tile.Top);
+            c = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+
+            if(c <= 90)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }            
+        }
+
+        private void CheckForWin()
+        {
+            bool check = true;
+            for(int i = 0; i < 16; i++)
+            {
+                check = check & (tiles[i].Location == initialLocations[i]);
+            }
+
+            if (check)
+            {
+                GameOver();
+            }
+        }
+
+        private void GameOver()
+        {
+            MessageBox.Show("You win!");
         }
     }
 }
