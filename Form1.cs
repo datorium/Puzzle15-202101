@@ -14,6 +14,8 @@ namespace Puzzle15_202101
     {
 
         List<Button> tiles = new List<Button>();
+        List<Point> initialLocations = new List<Point>();
+        
         Random rand = new Random();
 
         public Puzzle()
@@ -27,12 +29,19 @@ namespace Puzzle15_202101
         {
             int tileCounter = 1;
             Button tile = null;
+
+            this.Width = 420;
+            this.Height = 440;
+            
             for(int j = 0; j < 4; j++)
             {
                 for (int i = 0; i < 4; i++)
                 {
                     tile = new Button();
                     tile.BackColor = Color.SteelBlue;
+                    tile.ForeColor = Color.White;
+                    tile.FlatStyle = FlatStyle.Flat;
+                    tile.Font = new Font("Roboto", 20);
                     tile.Width = 80;
                     tile.Height = 80;
                     tile.Top = 20 + j * 90;
@@ -53,6 +62,7 @@ namespace Puzzle15_202101
 
                     this.Controls.Add(tile);
                     tiles.Add(tile);
+                    initialLocations.Add(tile.Location);
 
                     tileCounter++;
                 }
@@ -66,6 +76,7 @@ namespace Puzzle15_202101
             if (CanSwap(tile))
             {
                 SwapTiles(tile);
+                CheckForWin();
             }
             
         }
@@ -104,6 +115,25 @@ namespace Puzzle15_202101
             {
                 return false;
             }
+        }
+
+        private void CheckForWin()
+        {
+            bool win = true;
+            for(int i = 0; i < 16; i++)
+            {
+                win = win & tiles[i].Location == initialLocations[i];
+            }
+
+            if (win)
+            {
+                GameOver();
+            }
+        }
+
+        private void GameOver()
+        {
+            MessageBox.Show("You win!");
         }
 
     }
