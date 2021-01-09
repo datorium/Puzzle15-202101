@@ -62,7 +62,12 @@ namespace Puzzle15_202101
         private void Tile_Click(object sender, EventArgs e)
         {
             Button tile = (Button)sender;
-            SwapTiles(tile);
+
+            if (CanSwap(tile))
+            {
+                SwapTiles(tile);
+            }
+            
         }
         
         private void SwapTiles(Button tile)
@@ -81,5 +86,25 @@ namespace Puzzle15_202101
                 SwapTiles(tiles[rand.Next(0, 15)]);
             }
         }
+
+        private bool CanSwap(Button tile)
+        {
+            Button tileEmpty = (Button)this.Controls["TileEmpty"];
+
+            double a = 0, b = 0, c = 0;
+            a = tileEmpty.Left - tile.Left;
+            b = tileEmpty.Top - tile.Top;
+            c = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+
+            if (c <= 90)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
